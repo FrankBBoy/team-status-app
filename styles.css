@@ -1,0 +1,90 @@
+body {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: black;
+    transition: background-color 0.3s ease;
+}
+
+.button-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 20px;
+}
+
+button {
+
+    box-sizing: border-box;
+    border-color: #484F59;
+    border-radius: 30px;
+    border-width: 6px;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    text-shadow: 1px 1px 6px #000000;
+    box-shadow: 1px 1px 6px 0 #000000;
+}
+
+
+.available { background-color: #0B60B0; }
+.breakstick { background-color: #6962AD; }
+.queuemaintenance { background-color: #FE7A36; }
+.lunch { background-color: Green; }
+.duo { 
+   background: #D0F288;
+   background-image: -webkit-linear-gradient(top, #D0F288, #5E6D3C);
+   background-image: -moz-linear-gradient(top, #D0F288, #5E6D3C);
+   background-image: -ms-linear-gradient(top, #D0F288, #5E6D3C);
+   background-image: -o-linear-gradient(top, #D0F288, #5E6D3C);
+   background-image: -webkit-gradient(to bottom, #D0F288, #5E6D3C);
+}
+.buzzworthy {
+    background: #FA7070;
+    background-image: -webkit-linear-gradient(top, #FA7070, #632828);
+    background-image: -moz-linear-gradient(top, #FA7070, #632828);
+    background-image: -ms-linear-gradient(top, #FA7070, #632828);
+    background-image: -o-linear-gradient(top, #FA7070, #632828);
+    background-image: -webkit-gradient(to bottom, #FA7070, #632828);
+}
+.assisted { 
+    background: #92C7CF;
+    background-image: -webkit-linear-gradient(top, #92C7CF, #3B5053);
+    background-image: -moz-linear-gradient(top, #92C7CF, #3B5053);
+    background-image: -ms-linear-gradient(top, #92C7CF, #3B5053);
+    background-image: -o-linear-gradient(top, #92C7CF, #3B5053);
+    background-image: -webkit-gradient(to bottom, #92C7CF, #3B5053); 
+}
+
+.status-buttons {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+}
+
+.status-button {
+    margin: 1px;
+}
+
+.status-button.Available { background-color: #40A2D8; }
+.status-button.BreakStick { background-color: #7BD3EA; }
+.status-button.QueueMaintenance { background-color: Orange; }
+.status-button.Lunch { background-color: Green; }
+.status-button.DUO { background-color: #D0F288; }
+.status-button.buzzworthy { background-color: #FA7070; }
+.status-button.Assisted { background-color: #92C7CF; }
+.status-button.break {
+    background-color: #7BD3EA;
+}
+
+.status-button.meeting {
+    background-color: #FFD95A;
+}
+
+.bottom-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-content: space-evenly;
+    margin-top: 20px;
+}
