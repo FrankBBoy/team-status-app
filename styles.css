@@ -26,17 +26,13 @@ button {
 }
 
 .available {
-  background-color: #0b60b0;
-}
-.breakstick {
-  background-color: #6962ad;
-}
-.queuemaintenance {
-  background-color: #cf6029;
-}
-.lunch {
-  background-color: Green;
-}
+  background-color: rgb(11, 96, 176);}
+.breakstick { background-color: #6962AD; }
+.queuemaintenance { background-color: #FE7A36; }
+.lunch { background-color: Green; }
+.break {background-color: #7BD3EA}
+.meeting{background-color: #b99d40}
+
 .duo {
   background: #d0f288;
   background-image: -webkit-linear-gradient(top, #d0f288, #5e6d3c);
@@ -45,6 +41,7 @@ button {
   background-image: -o-linear-gradient(top, #d0f288, #5e6d3c);
   background-image: -webkit-gradient(to bottom, #d0f288, #5e6d3c);
 }
+
 .buzzworthy {
   background: #fa7070;
   background-image: -webkit-linear-gradient(top, #fa7070, #632828);
@@ -53,6 +50,7 @@ button {
   background-image: -o-linear-gradient(top, #fa7070, #632828);
   background-image: -webkit-gradient(to bottom, #fa7070, #632828);
 }
+
 .assisted {
   background: #92c7cf;
   background-image: -webkit-linear-gradient(top, #92c7cf, #3b5053);
@@ -70,35 +68,6 @@ button {
 
 .status-button {
   margin: 1px;
-}
-
-.status-button.Available {
-  background-color: #40a2d8;
-}
-.status-button.BreakStick {
-  background-color: #7bd3ea;
-}
-.status-button.QueueMaintenance {
-  background-color: Orange;
-}
-.status-button.Lunch {
-  background-color: Green;
-}
-.status-button.DUO {
-  background-color: #d0f288;
-}
-.status-button.buzzworthy {
-  background-color: #fa7070;
-}
-.status-button.Assisted {
-  background-color: #92c7cf;
-}
-.status-button.break {
-  background-color: #7bd3ea;
-}
-
-.status-button.meeting {
-  background-color: #b99d40;
 }
 
 .bottom-buttons {
