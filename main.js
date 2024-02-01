@@ -17,8 +17,8 @@ const teamData = {
     },
     // ... Add more team members as needed ...
   },
-  supervisorStatusOptions: ["Available", "Break", "Lunch", "Meeting", "OUT"],
-  statusOptions: ["Available", "Break Stick", "Queue Maintenance", "Lunch", "OUT"],
+  supervisorStatusOptions: ["Available", "Break", "Lunch", "Meeting"],
+  statusOptions: ["Available", "Break Stick", "Queue Maintenance", "Lunch"],
 };
 
 // Variable to store the timeout ID for the "Assisted" button background color
@@ -123,12 +123,6 @@ function displayStatusOptions(member) {
     optionButton.className = "status-button";
     const optionClass = option.replace(/\s+/g, "").toLowerCase();
     optionButton.classList.add(optionClass);
-
-    // Set background color for "OUT" status
-    if (option === "OUT") {
-      optionButton.style.backgroundColor = "#2c3536";
-    }
-
     optionButton.innerText = option;
     optionButton.addEventListener("click", () => {
       updateStatus(member, option, null);
@@ -211,7 +205,7 @@ function updateStatus(member, newStatus, backgroundColor) {
     // Update the status for the supervisor
     teamData.members[member].status = newStatus;
 
-    // Update the background color of the button to match the selected status option
+    // Update the background color of the supervisor button to match the selected status option
     if (newStatus === "Available") {
       backgroundColor = "#0b60b0";
     } else if (newStatus === "Lunch") {
@@ -220,8 +214,6 @@ function updateStatus(member, newStatus, backgroundColor) {
       backgroundColor = "#7BD3EA";
     } else if (newStatus === "Meeting") {
       backgroundColor = "#b99d40";
-    } else if (newStatus === "OUT") {
-      backgroundColor = "#2c3536";
     }
 
     document.getElementById(member).style.backgroundColor = backgroundColor;
