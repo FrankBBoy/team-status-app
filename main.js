@@ -17,9 +17,15 @@ const teamData = {
     },
     // ... Add more team members as needed ...
   },
-  supervisorStatusOptions: ["Available", "Break", "Lunch", "Meeting"],
-  statusOptions: ["Available", "Break Stick", "Queue Maintenance", "Lunch"],
+  supervisorStatusOptions: ["Available", "Break", "Lunch", "Meeting", "OUT"],
+  statusOptions: ["Available", "Break Stick", "Queue Maintenance", "Lunch", "OUT"],
 };
+
+// Variable to store the timeout ID for the "Assisted" button background color
+let assistedTimeoutId;
+
+// Flag to track whether a status has been selected
+let statusSelected = false;
 
 // Function to initialize the team members and add event listeners
 function initializeTeamMembers() {
@@ -38,7 +44,66 @@ function initializeTeamMembers() {
       }
     });
 
+    // Add touch event for touchscreen capability
+    button.addEventListener("touchstart", (event) => {
+      event.preventDefault();
+      if (!teamData.members[member].optionsActive) {
+        displayStatusOptions(member);
+      }
+    });
+
     buttonContainer.appendChild(button);
+
+  });
+
+  // Event listener for DUO button
+  document.getElementById("duo").addEventListener("click", () => {
+    // Interrupt the Assisted button background color change
+    interruptAssistedBackgroundColorChange();
+    changePageBackground("#d0f288");
+  });
+
+  document.getElementById("duo").addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    // Interrupt the Assisted button background color change
+    interruptAssistedBackgroundColorChange();
+    changePageBackground("#d0f288");
+  });
+
+  // Event listener for Buzz Worthy button
+  document.getElementById("buzzworthy").addEventListener("click", () => {
+    // Interrupt the Assisted button background color change
+    interruptAssistedBackgroundColorChange();
+    changePageBackground("#fa7070");
+  });
+
+  document.getElementById("buzzworthy").addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    // Interrupt the Assisted button background color change
+    interruptAssistedBackgroundColorChange();
+    changePageBackground("#fa7070");
+  });
+
+  // Event listener for Assisted button
+  document.getElementById("assisted").addEventListener("click", () => {
+    // Set the background color for Assisted button
+    changePageBackground("#92c7cf");
+
+    // Set a timeout to reset the background color after 7 seconds
+    assistedTimeoutId = setTimeout(() => {
+      document.body.style.backgroundColor = ""; // Set it to your initial color
+    }, 7000);
+  });
+
+  document.getElementById("assisted").addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    // Set the background color for Assisted button
+    changePageBackground("#92c7cf");
+
+    // Set a timeout to reset the background color after 7 seconds
+    assistedTimeoutId = setTimeout(() => {
+      document.body.style.backgroundColor = ""; // Set it to your initial color
+    }, 7000);
   });
 }
 
@@ -58,6 +123,12 @@ function displayStatusOptions(member) {
     optionButton.className = "status-button";
     const optionClass = option.replace(/\s+/g, "").toLowerCase();
     optionButton.classList.add(optionClass);
+
+    // Set background color for "OUT" status
+    if (option === "OUT") {
+      optionButton.style.backgroundColor = "#2c3536";
+    }
+
     optionButton.innerText = option;
     optionButton.addEventListener("click", () => {
       updateStatus(member, option, null);
@@ -140,7 +211,7 @@ function updateStatus(member, newStatus, backgroundColor) {
     // Update the status for the supervisor
     teamData.members[member].status = newStatus;
 
-    // Update the background color of the supervisor button to match the selected status option
+    // Update the background color of the button to match the selected status option
     if (newStatus === "Available") {
       backgroundColor = "#0b60b0";
     } else if (newStatus === "Lunch") {
@@ -149,6 +220,8 @@ function updateStatus(member, newStatus, backgroundColor) {
       backgroundColor = "#7BD3EA";
     } else if (newStatus === "Meeting") {
       backgroundColor = "#b99d40";
+    } else if (newStatus === "OUT") {
+      backgroundColor = "#2c3536";
     }
 
     document.getElementById(member).style.backgroundColor = backgroundColor;
@@ -247,13 +320,13 @@ function updateStatus(member, newStatus, backgroundColor) {
 // Function to change the page background color
 function changePageBackground(color) {
   document.body.style.backgroundColor = color;
+}
 
-  // Check if the color is being set to the initial color after clicking "Assisted" button
-  if (color === "#92c7cf") {
-    // Reset the background color to the initial color after 7 seconds
-    setTimeout(() => {
-      document.body.style.backgroundColor = ""; // Set it to your initial color
-    }, 7000);
+// Function to interrupt the Assisted button background color change
+function interruptAssistedBackgroundColorChange() {
+  // Check if the Assisted button background color change is in progress
+  if (assistedTimeoutId) {
+    clearTimeout(assistedTimeoutId);
   }
 }
 
@@ -265,12 +338,44 @@ document.getElementById("duo").addEventListener("click", () => {
   changePageBackground("#d0f288");
 });
 
+document.getElementById("duo").addEventListener("touchstart", (event) => {
+  event.preventDefault();
+  changePageBackground("#d0f288");
+});
+
 // Event listener for Buzz Worthy button
 document.getElementById("buzzworthy").addEventListener("click", () => {
+  changePageBackground("#fa7070");
+});
+
+document.getElementById("buzzworthy").addEventListener("touchstart", (event) => {
+  event.preventDefault();
   changePageBackground("#fa7070");
 });
 
 // Event listener for Assisted button
 document.getElementById("assisted").addEventListener("click", () => {
   changePageBackground("#92c7cf");
+
+  // Set a timeout to reset the background color after 7 seconds only if a status is selected
+  if (statusSelected) {
+    assistedTimeoutId = setTimeout(() => {
+      document.body.style.backgroundColor = ""; // Set it to your initial color
+      statusSelected = false;
+    }, 7000);
+  }
 });
+
+document.getElementById("assisted").addEventListener("touchstart", (event) => {
+  event.preventDefault();
+  changePageBackground("#92c7cf");
+
+  // Set a timeout to reset the background color after 7 seconds only if a status is selected
+  if (statusSelected) {
+    assistedTimeoutId = setTimeout(() => {
+      document.body.style.backgroundColor = ""; // Set it to your initial color
+      statusSelected = false;
+    }, 7000);
+  }
+});
+
