@@ -16,9 +16,9 @@ body {
 
 button {
   box-sizing: border-box;
-  border-color: #484f59;
+  border-color: #838e9e;
   border-radius: 30px;
-  border-width: 4px;
+  border-width: 1px;
   color: white;
   font-size: 14px;
   font-weight: 600;
@@ -33,6 +33,7 @@ button {
 .lunch { background-color: Green; }
 .break {background-color: #7BD3EA}
 .meeting{background-color: #b99d40}
+.out{background-color: #213031;}
 
 .duo {
   background: #d0f288;

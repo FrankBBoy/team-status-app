@@ -17,8 +17,8 @@ const teamData = {
     },
     // ... Add more team members as needed ...
   },
-  supervisorStatusOptions: ["Available", "Break", "Lunch", "Meeting"],
-  statusOptions: ["Available", "Break Stick", "Queue Maintenance", "Lunch"],
+  supervisorStatusOptions: ["Available", "Break", "Lunch", "Meeting", "Out"], // Added "Out" status
+  statusOptions: ["Available", "Break Stick", "Queue Maintenance", "Lunch", "Out"], // Added "Out" status
 };
 
 // Variable to store the timeout ID for the "Assisted" button background color
@@ -53,62 +53,76 @@ function initializeTeamMembers() {
     });
 
     buttonContainer.appendChild(button);
-
   });
 
-  // Event listener for DUO button
-  document.getElementById("duo").addEventListener("click", () => {
-    // Interrupt the Assisted button background color change
-    interruptAssistedBackgroundColorChange();
-    changePageBackground("#d0f288");
-  });
+// Event listener for DUO button
+document.getElementById("duo").addEventListener("click", () => {
+  // Interrupt the Assisted button background color change
+  interruptAssistedBackgroundColorChange();
+  changePageBackground("#d0f288");
+  statusSelected = false; // Reset statusSelected flag
+});
 
-  document.getElementById("duo").addEventListener("touchstart", (event) => {
-    event.preventDefault();
-    // Interrupt the Assisted button background color change
-    interruptAssistedBackgroundColorChange();
-    changePageBackground("#d0f288");
-  });
+document.getElementById("duo").addEventListener("touchstart", (event) => {
+  event.preventDefault();
+  // Interrupt the Assisted button background color change
+  interruptAssistedBackgroundColorChange();
+  changePageBackground("#d0f288");
+  statusSelected = false; // Reset statusSelected flag
+});
 
-  // Event listener for Buzz Worthy button
-  document.getElementById("buzzworthy").addEventListener("click", () => {
-    // Interrupt the Assisted button background color change
-    interruptAssistedBackgroundColorChange();
-    changePageBackground("#fa7070");
-  });
+// Event listener for Buzz Worthy button
+document.getElementById("buzzworthy").addEventListener("click", () => {
+  // Interrupt the Assisted button background color change
+  interruptAssistedBackgroundColorChange();
+  changePageBackground("#fa7070");
+  statusSelected = false; // Reset statusSelected flag
+});
 
-  document.getElementById("buzzworthy").addEventListener("touchstart", (event) => {
-    event.preventDefault();
-    // Interrupt the Assisted button background color change
-    interruptAssistedBackgroundColorChange();
-    changePageBackground("#fa7070");
-  });
+document.getElementById("buzzworthy").addEventListener("touchstart", (event) => {
+  event.preventDefault();
+  // Interrupt the Assisted button background color change
+  interruptAssistedBackgroundColorChange();
+  changePageBackground("#fa7070");
+  statusSelected = false; // Reset statusSelected flag
+});
 
-  // Event listener for Assisted button
-  document.getElementById("assisted").addEventListener("click", () => {
-    // Set the background color for Assisted button
-    changePageBackground("#92c7cf");
+// Event listener for Assisted button
+document.getElementById("assisted").addEventListener("click", () => {
+  // Set the background color for Assisted button
+  changePageBackground("#92c7cf");
 
-    // Set a timeout to reset the background color after 7 seconds
+  // Set a timeout to reset the background color after 7 seconds only if a status is selected
+  if (statusSelected) {
     assistedTimeoutId = setTimeout(() => {
       document.body.style.backgroundColor = ""; // Set it to your initial color
+      statusSelected = false;
     }, 7000);
-  });
+  }
+});
 
-  document.getElementById("assisted").addEventListener("touchstart", (event) => {
-    event.preventDefault();
-    // Set the background color for Assisted button
-    changePageBackground("#92c7cf");
+document.getElementById("assisted").addEventListener("touchstart", (event) => {
+  event.preventDefault();
+  // Set the background color for Assisted button
+  changePageBackground("#92c7cf");
 
-    // Set a timeout to reset the background color after 7 seconds
+  // Set a timeout to reset the background color after 7 seconds only if a status is selected
+  if (statusSelected) {
     assistedTimeoutId = setTimeout(() => {
       document.body.style.backgroundColor = ""; // Set it to your initial color
+      statusSelected = false;
     }, 7000);
-  });
+  }
+});
 }
 
 // Function to display list of available options as buttons for team members
 function displayStatusOptions(member) {
+  // Check if options are already active
+  if (teamData.members[member].optionsActive) {
+    return;
+  }
+
   const optionsContainer = document.createElement("div");
   optionsContainer.className = "status-buttons";
 
@@ -127,6 +141,14 @@ function displayStatusOptions(member) {
     optionButton.addEventListener("click", () => {
       updateStatus(member, option, null);
       document.body.removeChild(optionsContainer);
+
+      // Update the flag when a status is selected
+      statusSelected = true;
+
+      // Reset optionsActive flag after displaying options
+      setTimeout(() => {
+        teamData.members[member].optionsActive = false;
+      }, 0);
     });
     optionsContainer.appendChild(optionButton);
   });
@@ -149,14 +171,17 @@ function displayStatusOptions(member) {
 
   teamData.members[member].optionsActive = true;
 
-  // Resets optionsActive flag after displaying options
-  setTimeout(() => {
-    teamData.members[member].optionsActive = false;
-  }, 0);
+  // Set optionsActive flag to true
+  teamData.members[member].optionsActive = true;
 }
 
 // Function to display supervisor status options for any supervisor
 function displaySupervisorStatusOptions(member) {
+  // Check if options are already active
+  if (teamData.members[member].optionsActive) {
+    return;
+  }
+
   const optionsContainer = document.createElement("div");
   optionsContainer.className = "status-buttons";
 
@@ -179,6 +204,9 @@ function displaySupervisorStatusOptions(member) {
     optionButton.addEventListener("click", () => {
       updateStatus(member, option, null);
       document.body.removeChild(optionsContainer);
+
+      // Update the flag when a status is selected
+      statusSelected = true;
     });
     optionsContainer.appendChild(optionButton);
   });
@@ -192,15 +220,17 @@ function displaySupervisorStatusOptions(member) {
   document.body.appendChild(optionsContainer);
 
   // Set optionsActive flag to true
-  teamMembers[member].optionsActive = true;
+  teamData.members[member].optionsActive = true;
 }
 
 // Function to update the status
 function updateStatus(member, newStatus, backgroundColor) {
+  const memberButton = document.getElementById(member);
+
   // Check if the member is a supervisor
   if (teamData.members[member].position === "Supervisor") {
     // Reset background color for supervisor button
-    document.getElementById(member).style.backgroundColor = null;
+    memberButton.style.backgroundColor = null;
 
     // Update the status for the supervisor
     teamData.members[member].status = newStatus;
@@ -214,15 +244,16 @@ function updateStatus(member, newStatus, backgroundColor) {
       backgroundColor = "#7BD3EA";
     } else if (newStatus === "Meeting") {
       backgroundColor = "#b99d40";
+    } else if (newStatus === "Out") {
+      backgroundColor = "#213031"; // Set the color for "Out" status
     }
 
-    document.getElementById(member).style.backgroundColor = backgroundColor;
+    memberButton.style.backgroundColor = backgroundColor;
 
-    const supervisorButton = document.getElementById(member);
-    supervisorButton.innerText = `${teamData.members[member].position} - ${
+    memberButton.innerText = `${teamData.members[member].position} - ${
       member.charAt(0).toUpperCase() + member.slice(1)
     } - ${newStatus}`;
-    supervisorButton.classList.remove(
+    memberButton.classList.remove(
       "available",
       "breakstick",
       "queuemaintenance",
@@ -231,7 +262,7 @@ function updateStatus(member, newStatus, backgroundColor) {
       "buzzworthy",
       "assisted"
     );
-    supervisorButton.classList.add(newStatus.replace(/\s+/g, "").toLowerCase());
+    memberButton.classList.add(newStatus.replace(/\s+/g, "").toLowerCase());
 
     // Reset optionsActive flag to false after selecting a status
     teamData.members[member].optionsActive = false;
@@ -287,9 +318,9 @@ function updateStatus(member, newStatus, backgroundColor) {
 
     // Reset optionsActive flag for the member
     teamData.members[member].optionsActive = false;
+
     // Update the status and button text for team members
     teamData.members[member].status = newStatus;
-    const memberButton = document.getElementById(member);
     memberButton.innerText = `${teamData.members[member].position} - ${
       member.charAt(0).toUpperCase() + member.slice(1)
     } - ${newStatus}`;
@@ -300,9 +331,13 @@ function updateStatus(member, newStatus, backgroundColor) {
       "lunch",
       "duo",
       "buzzworthy",
-      "assisted"
+      "assisted",
+      "out"
     );
     memberButton.classList.add(newStatus.replace(/\s+/g, "").toLowerCase());
+
+    // Update the background color of the member button to match the selected status option
+    memberButton.style.backgroundColor = backgroundColor;
 
     // Reset optionsActive flag to false after selecting a status
     teamData.members[member].optionsActive = false;
