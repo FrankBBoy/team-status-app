@@ -18,7 +18,7 @@ const teamData = {
     // ... Add more team members as needed ...
   },
   supervisorStatusOptions: ["Available", "Break", "Lunch", "Meeting", "Out"], // Added "Out" status
-  statusOptions: ["Available", "Break Stick", "Queue Maintenance", "Lunch", "Out"], // Added "Out" status
+  statusOptions: ["Available", "Break Stick", "Out Of Queue", "Lunch", "Out"], // Added "Out" status
 };
 
 // Variable to store the timeout ID for the "Assisted" button background color
@@ -95,7 +95,7 @@ document.getElementById("assisted").addEventListener("click", () => {
   // Set a timeout to reset the background color after 7 seconds only if a status is selected
   if (statusSelected) {
     assistedTimeoutId = setTimeout(() => {
-      document.body.style.backgroundColor = ""; // Set it to your initial color
+      document.body.style.backgroundColor = ""; // Set it to the initial color
       statusSelected = false;
     }, 7000);
   }
@@ -109,7 +109,7 @@ document.getElementById("assisted").addEventListener("touchstart", (event) => {
   // Set a timeout to reset the background color after 7 seconds only if a status is selected
   if (statusSelected) {
     assistedTimeoutId = setTimeout(() => {
-      document.body.style.backgroundColor = ""; // Set it to your initial color
+      document.body.style.backgroundColor = ""; // Set it to the initial color
       statusSelected = false;
     }, 7000);
   }
@@ -256,7 +256,7 @@ function updateStatus(member, newStatus, backgroundColor) {
     memberButton.classList.remove(
       "available",
       "breakstick",
-      "queuemaintenance",
+      "outofqueue",
       "lunch",
       "duo",
       "buzzworthy",
@@ -327,7 +327,7 @@ function updateStatus(member, newStatus, backgroundColor) {
     memberButton.classList.remove(
       "available",
       "breakstick",
-      "queuemaintenance",
+      "outofqueue",
       "lunch",
       "duo",
       "buzzworthy",
